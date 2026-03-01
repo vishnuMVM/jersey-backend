@@ -16,6 +16,12 @@ const DPI = 300;
 const nameFromTop = 7.2*DPI;
 const numberFromTop = nameFromTop + 8*DPI;
 
+
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
+
+
 const sizeConfig = {
   "S": { w: 20 * DPI, h: 29.5 * DPI },
   "M": { w: 21 * DPI, h: 30.5 * DPI },
@@ -312,5 +318,5 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log("Server running on", PORT));
 
-
+// app.listen(5000, () => console.log("Server running on 5000"));
 
