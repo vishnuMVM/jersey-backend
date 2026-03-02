@@ -226,6 +226,8 @@ if (rightLogo) {
 
         const file = `front_${size}_${sizeCounts[size]}pcs.jpg`;
         fs.writeFileSync(`output/${file}`, canvas.toBuffer("image/jpeg", { quality: 0.9, progressive: true }));
+        canvas.width = 0;
+canvas.height = 0;
         frontResults.push({
           size,
           url: `${req.protocol}://${req.get("host")}/output/${file}`,
@@ -294,8 +296,9 @@ if (rightLogo) {
         drawCenterMark(ctx, cfg, p.size);
 
         const file = `${p.name}_${p.size}.jpg`;
-        fs.writeFileSync(`output/${file}`, canvas.toBuffer("image/jpeg", { quality: 1 }));
-
+        fs.writeFileSync(`output/${file}`, canvas.toBuffer("image/jpeg", { quality: 0.9, progressive: true }));
+canvas.width = 0;
+canvas.height = 0;
         backResults.push({
           name: p.name,
           number: p.number,
