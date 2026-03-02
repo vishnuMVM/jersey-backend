@@ -297,7 +297,7 @@ canvas.height = 0;
 
         const file = `${p.name}_${p.size}.jpg`;
         fs.writeFileSync(`output/${file}`, canvas.toBuffer("image/jpeg", { quality: 0.9, progressive: true }));
-canvas.width = 0;
+                canvas.width = 0;
 canvas.height = 0;
         backResults.push({
           name: p.name,
@@ -321,11 +321,11 @@ canvas.height = 0;
 );
 
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => console.log("Server running"));
+// const server = app.listen(PORT, () => console.log("Server running"));
 
-server.setTimeout(10 * 60 * 1000); // 10 minutes
+// server.setTimeout(10 * 60 * 1000); // 10 minutes
 
-// app.listen(PORT, () => console.log("Server running on", PORT));
+app.listen(PORT, () => console.log("Server running on", PORT));
 
 // app.listen(5000, () => console.log("Server running on 5000"));
 
