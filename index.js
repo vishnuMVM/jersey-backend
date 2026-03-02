@@ -9,17 +9,15 @@ const app = express();
 app.use(cors());
 app.use("/output", express.static("output"));
 
-const upload = multer({ dest: "uploads/" });
+const upload = multer({
+  dest: "/tmp",
+  limits: { fileSize: 20 * 1024 * 1024 } // 20MB safety limit
+});
 
 /* ===== SIZE CONFIG ===== */
 const DPI = 300;
 const nameFromTop = 7.2*DPI;
 const numberFromTop = nameFromTop + 8*DPI;
-
-
-if (!fs.existsSync("uploads")) {
-  fs.mkdirSync("uploads");
-}
 
 
 const sizeConfig = {
@@ -144,8 +142,10 @@ app.post(
       const leftLogo = req.files.leftLogo?.[0]?.path;
       const rightLogo = req.files.rightLogo?.[0]?.path;
 
-      const buffer = fs.readFileSync(pdf);
-      const parser = new PDFParse({ data: buffer });
+      // const buffer = fs.readFileSync(pdf);
+      // const parser = new PDFParse({ data: buffer });
+      const parser = new PDFParse({ url: pdf });
+
       const text = await parser.getText();
 
       const players = parsePDF(text.text);
@@ -225,7 +225,7 @@ if (rightLogo) {
         drawCenterMark(ctx, cfg, size);
 
         const file = `front_${size}_${sizeCounts[size]}pcs.jpg`;
-        fs.writeFileSync(`output/${file}`, canvas.toBuffer("image/jpeg", { quality: 1 }));
+        fs.writeFileSync(`output/${file}`, canvas.toBuffer("image/jpeg", { quality: 0.92}));
         frontResults.push({
           size,
           url: `${req.protocol}://${req.get("host")}/output/${file}`,
@@ -306,6 +306,9 @@ if (rightLogo) {
         });
       }
 
+      Object.values(req.files).flat().forEach(file => {
+  fs.remove(file.path);
+});
       res.json({ success: true, frontImages: frontResults, backImages: backResults });
     } catch (err) {
       console.error(err);
